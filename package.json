@@ -12,6 +12,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.11.14",
     "dotenv": "^16.5.0",
+    "midtrans-client": "^1.4.2",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
     "pg": "^8.15.6",
