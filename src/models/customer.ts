@@ -1,49 +1,43 @@
+// models/customer.ts
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '@/lib/sequelize';
 
-interface UserAttributes {
-  id: string
-  username: string
-  name: string
-  password: string
-  role: string
-  created_at: Date
-  updatedAt?: Date
-  deletedAt?: Date | null
+interface CustomerAttributes {
+    id: string;
+    nama: string;
+    no_hp: string;
+    email: string;
+    created_at?: Date;
+    updated_at?: Date;
+    
 }
 
-class User extends Model<UserAttributes, Optional<UserAttributes, 'id'>> implements UserAttributes {
+class Customer extends Model<CustomerAttributes, Optional<CustomerAttributes, 'id'>> implements CustomerAttributes {
     public readonly id!: string;
-    public username!: string;
-    public name!: string;
-    public password!: string;
-    public role!: string;
+    public nama!: string;
+    public no_hp!: string;
+    public email!: string;
     
     public readonly created_at!: Date;
     public readonly updated_at!: Date;
-    public readonly deleted_at!: Date | null;
 }
 
-User.init(
+Customer.init(
     {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
         },
-        username: {
+        nama: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        name: {
+        no_hp: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        role: {
+        email: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -57,21 +51,16 @@ User.init(
             allowNull: false,
             defaultValue: DataTypes.NOW,
         },
-        deleted_at: {
-            type: DataTypes.DATE,
-            allowNull: true,
-        },
     },
     {
         sequelize,
-        modelName: 'User',
-        tableName: 'users',
+        modelName: 'Customer',
+        tableName: 'customers',
         timestamps: true,
         paranoid: true,
         updatedAt: 'updated_at',
         createdAt: 'created_at',
-        deletedAt: 'deleted_at',
     }
 );
 
-export default User;
+export default Customer;
