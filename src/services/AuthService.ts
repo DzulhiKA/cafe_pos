@@ -1,28 +1,35 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { JWT } from "next-auth/jwt";
-import { NextAuthConfig } from "next-auth";
+import User from "@/models/User";
+import { compare } from "bcryptjs";
 
 const config = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
+        if (!credentials?.username || credentials.password) return null;
 
-        const { email, password } = credentials;
+        const user = await User.findOne({
+            where: {
+                username: credentials.username,
+            }
+        })
 
         // TODO: Validate credentials (eg. check DB)
-        if (email === "admin@example.com" && password === "admin") {
-          return {
-            id: "1",
-            name: "Admin User",
-            email: "admin@example.com",
-          };
+        if (user) {
+            const isValidPassword = await compare(
+                credentials.password,
+                user.password
+            );
+
+            if (!isValidPassword) return null;
+
+          return user;
         }
 
         return null;
@@ -33,43 +40,24 @@ const config = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user && token.id) {
-        session.user.id = token.id as string;
-      }
-      return session;
-    },
-  },
-} satisfies NextAuthConfig;
+//   callbacks: {
+//     async jwt({ token, user } : {
+//         token: JWT
+//         user: User,
+//     }) {
+//       if (user) { 
+//         token.id = user.id;
+//       }
+//       return token;
+//     },
+//     async session({ session, token }) {
+//       if (session.user && token.id) {
+//         session.user.id = token.id as string;
+//       }
+//       return session;
+//     },
+//   },
+} satisfies NextAuthOptions;
 
-const handler = NextAuth(config);
-
-export default class AuthService {
-    static async login(username: string, password: string) {
-        // Simulate an API call
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    token: "fake-jwt-token",
-                    user: { username },
-                });
-            }, 1000);
-        });
-    }
-
-    static async logout() {
-        // Simulate an API call
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(true);
-            }, 1000);
-        });
-    }
-}
+const nextAuthHandler = NextAuth(config);
+export default nextAuthHandler;

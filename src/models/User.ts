@@ -2,14 +2,14 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '@/lib/sequelize';
 
 interface UserAttributes {
-  id: string
-  username: string
-  name: string
-  password: string
-  role: string
-  created_at: Date
-  updatedAt?: Date
-  deletedAt?: Date | null
+    id: string;
+    username: string;
+    name: string;
+    password: string;
+    role: string;
+    created_at?: Date;
+    updated_at?: Date;
+    deleted_at?: Date | null;
 }
 
 class User extends Model<UserAttributes, Optional<UserAttributes, 'id'>> implements UserAttributes {

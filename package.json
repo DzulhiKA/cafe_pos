@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.11.14",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "midtrans-client": "^1.4.2",
     "next": "15.3.1",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
