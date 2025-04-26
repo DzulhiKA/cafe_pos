@@ -7,9 +7,9 @@ interface UserAttributes {
     name: string;
     password: string;
     role: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date | null;
+    created_at?: Date;
+    updated_at?: Date;
+    deleted_at?: Date | null;
 }
 
 class User extends Model<UserAttributes, Optional<UserAttributes, 'id'>> implements UserAttributes {
